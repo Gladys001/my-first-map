@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>My First Map Markers</title>
+  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no">
+  <link href="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.css" rel="stylesheet">
+  <script src="https://api.mapbox.com/mapbox-gl-js/v3.15.0/mapbox-gl.js"></script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="map"></div>
+  <script>
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZGlhbmEtNTY3IiwiYSI6ImNtZzVuaXFkaDA2bWcyanByYm9rN3ZwbGoifQ.Fpb0jssAK_DgrE5eNCnWRw';
+    const map = new mapboxgl.Map({
+      container: 'map',
+      // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
+      style: 'mapbox://styles/mapbox/outdoors-v12',
+      center: [ -3.7118265649630358,40.4190206106281 ],
+      zoom: 10
+    });
+
+    map.on('load', () => {
+      map.addSource('my-places', {
+        'type': 'geojson',
+        'data': {
+          'type': 'FeatureCollection',
+          'features': [
+            {
+              'type': 'Feature',
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [-3.7118265649630358,40.4190206106281],
+              },
+              "properties": {
+                'name': "my first popup",
+                 'description': "I want to go Here",
+              }
+            },
+            {
+              'type': 'Feature',
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [-3.6950538703784424,40.40918755570356,],
+                
+                
+                
+              },
+              "properties": {
+                'name': "my 2nd popup",
+                'description': "I want to go here",
+              }
+            },
+            {
+              'type': 'Feature',
+              'geometry': {
+                'type': 'Point',
+                'coordinates': [-3.690408626140222,40.442748065432895],
+              },
+              "properties": {
+                'name': "my 3rd popup",
+                'description': "I want to go here",
+              }
+            }
+          ]
+        }
+      });
+
+      map.addLayer({
+        'id': 'my-places',
+        'type': 'circle',
+        'source': 'my-places',
+        'paint': {
+          'circle-radius': 6,
+          'circle-color': '#B42222'
+        },
+        'filter': ['==', '$type', 'Point']
+      });
+    });
+
+    map.addInteraction('popup', {
+      type: 'click',
+      target: { layerId: 'my-places' },
+      handler: (e) => {
+        // Copy coordinates array.
+        const coordinates = e.feature.geometry.coordinates.slice();
+        const name = e.feature.properties.name;
+        const description = e.feature.properties.description;
+
+        new mapboxgl.Popup()
+          .setLngLat(coordinates)
+          .setHTML("<br><strong>" + name + "</strong><br/>" + description)
+          .addTo(map);
+      }
+    });
+
+  </script>
+
+</body>
+
+</html>
