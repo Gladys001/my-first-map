@@ -12,6 +12,10 @@
       margin: 0;
       padding: 0;
     }
+    img {
+      width: 200px;
+
+    }
 
     #map {
       position: absolute;
@@ -25,11 +29,11 @@
 <body>
   <div id="map"></div>
   <script>
-    mapboxgl.accessToken = 'pk.eyJ1IjoiZGlhbmEtNTY3IiwiYSI6ImNtZzVuaXFkaDA2bWcyanByYm9rN3ZwbGoifQ.Fpb0jssAK_DgrE5eNCnWRw';
+    mapboxgl.accessToken = 'pk.eyJ1IjoiZGlhbmEtNTY3IiwiYSI6ImNtZ3NqYnB3eTJ5N3IybW9rZ2x5dmNzMmoifQ.FOFeAsjq9lGJUv9xZJmybQ';
     const map = new mapboxgl.Map({
       container: 'map',
       // Choose from Mapbox's core styles, or make your own style with Mapbox Studio
-      style: 'mapbox://styles/mapbox/outdoors-v12',
+      style: 'mapbox://styles/diana-567/cmgsjvnx2002h01rb2zm7an6z',
       center: [ -3.7118265649630358,40.4190206106281 ],
       zoom: 10
     });
@@ -48,7 +52,8 @@
               },
               "properties": {
                 'name': "my first popup",
-                 'description': "I want to go Here",
+                'description': "Where I want to travel",
+                'image':"img/madrid.png",
               }
             },
             {
@@ -62,7 +67,8 @@
               },
               "properties": {
                 'name': "my 2nd popup",
-                'description': "I want to go here",
+                'description': "Where I want to travel",
+                'image':"img/museum.png",
               }
             },
             {
@@ -73,7 +79,8 @@
               },
               "properties": {
                 'name': "my 3rd popup",
-                'description': "I want to go here",
+                'description': "Where I want to travel",
+                'image':"img/mrs.png"
               }
             }
           ]
@@ -100,10 +107,11 @@
         const coordinates = e.feature.geometry.coordinates.slice();
         const name = e.feature.properties.name;
         const description = e.feature.properties.description;
+        const image = e.feature.properties.image;
 
         new mapboxgl.Popup()
           .setLngLat(coordinates)
-          .setHTML("<br><strong>" + name + "</strong><br/>" + description)
+          .setHTML("<img src='" + image + "'><br><strong>" + name + "</strong><br/>"+description)
           .addTo(map);
       }
     });
